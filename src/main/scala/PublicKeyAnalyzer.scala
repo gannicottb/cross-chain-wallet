@@ -13,7 +13,7 @@ object PublicKeyAnalyzer {
     _ <- putStrLn(s"Input: $pubKey")
     sha256 <- Task(sha256(ByteVector(pubKey.getBytes()))).tap(o => putStrLn(s"SHA256: $o"))
     ripemd <- Task(ripemd160(sha256)).tap(o => putStrLn(s"RIPEMD-160: $o"))
-    result <- Task(Bech32.encodeWitnessAddress("bc", 0.toByte, ripemd)).tap(o => putStrLn(s"Bech32: $o"))
+    result <- Task(Bech32.encodeWitnessAddress("tb", 0.toByte, ripemd)).tap(o => putStrLn(s"Bech32: $o"))
   } yield result
 
   def hash(digest: Digest)(input: ByteVector): ByteVector = {
