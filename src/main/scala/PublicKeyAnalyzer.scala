@@ -16,6 +16,7 @@ object PublicKeyAnalyzer {
     result <- Task(Bech32.encodeWitnessAddress("tb", 0.toByte, ripemd)).tap(o => putStrLn(s"Bech32: $o"))
   } yield result
 
+  // copied from https://github.com/gingerballsinc/bitcoin-lib/blob/master/src/main/scala/fr/acinq/bitcoin/Crypto.scala
   def hash(digest: Digest)(input: ByteVector): ByteVector = {
     digest.update(input.toArray, 0, input.length.toInt)
     val out = new Array[Byte](digest.getDigestSize)

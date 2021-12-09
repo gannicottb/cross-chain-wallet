@@ -1,0 +1,16 @@
+{
+  "name": "eth",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "index": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@ethereumjs/tx": "^3.4.0",
+    "web3": "^1.6.1"
+  }
+}

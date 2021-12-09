@@ -10,6 +10,10 @@ import zhttp.service.Server
 object Main extends App {
   val port = 8090
 
+  val helloRoutes = Http.collect[Request] {
+    case Method.GET -> Root / "text" => Response.text("Hello, World!")
+    case Method.GET -> Root / "json" => Response.jsonString(Seq("Hello", "World").asJson.spaces2)
+  }
   val app = Http.collectM[Request] {
     case Method.GET -> Root / "bech32" / pubKey =>
       val ethPubKey = "028fa5bcf187b4f488c739261012a45956a77a7b98590e06d938c6497aaca36133"
@@ -31,5 +35,5 @@ object Main extends App {
   }
 
   override def run(args: List[String]): URIO[zio.ZEnv, ExitCode] =
-    (putStrLn(s"Server booting on $port!") <* Server.start(port, app)).exitCode
+    (putStrLn(s"Server booting on $port!") <* Server.start(port, app +++ helloRoutes)).exitCode
 }
