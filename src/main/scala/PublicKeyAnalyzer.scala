@@ -4,6 +4,7 @@ import scodec.bits.ByteVector
 import org.bouncycastle.crypto.Digest
 import org.bouncycastle.crypto.digests.{RIPEMD160Digest, SHA1Digest, SHA256Digest, SHA512Digest}
 import fr.acinq.bitcoin.ByteVector32
+import fr.acinq.bitcoin.ByteVector32.byteVector32toByteVector
 import zio.Task
 import zio.console._
 
@@ -11,8 +12,9 @@ object PublicKeyAnalyzer {
 
   def toBech32(pubKey: String) = for {
     _ <- putStrLn(s"Input: $pubKey")
-    sha256 <- Task(sha256(ByteVector(pubKey.getBytes()))).tap(o => putStrLn(s"SHA256: $o"))
-    ripemd <- Task(ripemd160(sha256)).tap(o => putStrLn(s"RIPEMD-160: $o"))
+    sha256hash <- Task(sha256(ByteVector(pubKey.getBytes()))).tap(o => putStrLn(s"SHA256: $o"))
+    _ <- Task(sha256(byteVector32toByteVector(sha256hash))).tap(o => putStrLn(s"SHA -> SHA: $o"))
+    ripemd <- Task(ripemd160(sha256hash)).tap(o => putStrLn(s"RIPEMD-160: $o"))
     result <- Task(Bech32.encodeWitnessAddress("tb", 0.toByte, ripemd)).tap(o => putStrLn(s"Bech32: $o"))
   } yield result
 
